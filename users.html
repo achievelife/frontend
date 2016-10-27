@@ -86,21 +86,20 @@
             <li><a href="index.html">Overview</a></li>
             <li><a href="server.html">Server</a></li>
             <li class="active"><a href="#">Users<span class="sr-only">(current)</span></a></li>
-            <li><a href="#">Placeholder</a></li>
           </ul>
         </div>
       </div>
     </div>
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
       <h1 class="page-header">Users</h1>
-      <h3>Unique Users Today: 999</h3>
-      <h3>Current Active Users: 99</h3>
-      <h3>Interact with users</h3>
-      <h2 class="sub-header">User Statistics</h2>
+      <h3 id="uniqueUsers">Unique Users Today: 999</h3>
+      <h3 id="currentUsers">Current Active Users: 99</h3>
+      <h2 class="sub-header">User Info</h2>
           <div class="table-responsive">
             <table class="table table-striped">
               <thead>
                 <tr>
+                  <th>User #</th>
                   <th>Name</th>
                   <th>Last active</th>
                   <th>Fitness level</th>
@@ -109,27 +108,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>Guy 1</td>
-                  <td>Over 9000</td>
-                  <td>Over 9000</td>
-                  <td>Over 9000</td>
-                  <td>Over 9000</td>
-                </tr>
-                <tr>
-                  <td>Guy 2</td>
-                  <td>123</td>
-                  <td>123</td>
-                  <td>123</td>
-                  <td>123</td>
-                </tr>
-                <tr>
-                  <td>Guy 3</td>
-                  <td>321</td>
-                  <td>321</td>
-                  <td>321</td>
-                  <td>321</td>
-                </tr>
+
               </tbody>
             </table>
           </div>
@@ -140,5 +119,79 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.min.js"></script>
+    <script>
+      // Test script
+      $(function(){for (var i=0, l=5; i<l; i++){
+                    $("tbody").append("<tr><td>"+i+"</td><td>"+Math.random()*10+"</td><td>"+Math.random()*10+"</td><td>"+Math.random()*10+"</td><td>"+Math.random()*10+"</td><td>"+Math.random()*10+"</td></tr>")
+      }});
+
+      /* Get number of users and populate table
+      var userAmountResponse = $.getJSON( "http://achievelife.devnull.rocks/api/v1/userAmount?callback=?", function() {
+        console.log( "success" );
+      })
+        .done(function() {
+          var userAmountJSON = $.parseJSON(userAmountResponse);
+          for (var i=0, l=userAmountJSON.amount; i<l; i++){
+            var useriResponse = $.getJSON( "http://achievelife.devnull.rocks/api/v1/userInfo?userNumber="+i+"&callback=?", function() {
+              console.log( "success" );
+            })
+              .done(function() {
+                var useriJSON = $.parseJSON(useriResponse);
+                $("tableBody").append(
+                  "<tr><td>"+i+"</td><td>"+useriJSON.name+"</td><td>"+useriJSON.active+"</td><td>"+useriJSON.fitness+"</td><td>"+useriJSON.intelligence+"</td><td>"+useriJSON.finance+"</td></tr>"
+                );
+                console.log( "second success" );
+              })
+              .fail(function() {
+                console.log( "error" );
+              })
+              .always(function() {
+                console.log( "complete" );
+              });
+          }
+          console.log( "second success" );
+        })
+        .fail(function() {
+          console.log( "error" );
+        })
+        .always(function() {
+          console.log( "complete" );
+        });
+        */
+
+      /* Unique Users today
+      var jqxhr = $.getJSON( "http://achievelife.devnull.rocks/api/v1/uniqueUsers?callback=?", function() {
+        console.log( "success" );
+      })
+        .done(function() {
+          $( "#serverStatus" ).replaceWith( "<h3 id=" + "uniqueUsers" + ">Unique Users Today: Number from Api</h3>" );
+          console.log( "second success" );
+        })
+        .fail(function() {
+          $( "#serverStatus" ).replaceWith( "<h3 id=" + "serverStatus" + ">Unique Users Today: Error</h3>" );
+          console.log( "error" );
+        })
+        .always(function() {
+          console.log( "complete" );
+        });
+        */
+
+      /* Current active users
+      var jqxhr = $.getJSON( "http://achievelife.devnull.rocks/api/v1/currentUsers?callback=?", function() {
+        console.log( "success" );
+      })
+        .done(function() {
+          $( "#serverStatus" ).replaceWith( "<h3 id=" + "serverStatus" + ">Current Active Users: Number from api</h3>" );
+          console.log( "second success" );
+        })
+        .fail(function() {
+          $( "#serverStatus" ).replaceWith( "<h3 id=" + "serverStatus" + ">Current Active Users: Error</h3>" );
+          console.log( "error" );
+        })
+        .always(function() {
+          console.log( "complete" );
+        });
+        */
+    </script>
   </body>
 </html>

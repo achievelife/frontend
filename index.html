@@ -86,7 +86,6 @@
             <li class="active"><a href="#">Overview<span class="sr-only">(current)</span></a></li>
             <li><a href="server.html">Server</a></li>
             <li><a href="users.html">Users</a></li>
-            <li><a href="#">Placeholder</a></li>
           </ul>
         </div>
       </div>
@@ -94,9 +93,8 @@
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
       <h1 class="page-header">Overview</h1>
       <h3 id="serverStatus">Server Status:</h3>
-      <h3>Unique Users Today: 999</h3>
-      <h3>Current Active Users: 99</h3>
-      <h3>Other random things</h3>
+      <h3 id="uniqueUsers">Unique Users Today: 999</h3>
+      <h3 id="currentUsers">Current Active Users: 99</h3>
     </div>
 
 
@@ -106,6 +104,7 @@
     <script src="js/bootstrap.min.js"></script>
 
     <script>
+        // Server status code
         var jqxhr = $.getJSON( "http://achievelife.devnull.rocks/api/v1/ping?callback=?", function() {
           console.log( "success" );
         })
@@ -120,6 +119,40 @@
           .always(function() {
             console.log( "complete" );
           });
+
+        /* Unique Users today
+        var jqxhr = $.getJSON( "http://achievelife.devnull.rocks/api/v1/uniqueUsers?callback=?", function() {
+          console.log( "success" );
+        })
+          .done(function() {
+            $( "#serverStatus" ).replaceWith( "<h3 id=" + "uniqueUsers" + ">Unique Users Today: Number from Api</h3>" );
+            console.log( "second success" );
+          })
+          .fail(function() {
+            $( "#serverStatus" ).replaceWith( "<h3 id=" + "serverStatus" + ">Unique Users Today: Error</h3>" );
+            console.log( "error" );
+          })
+          .always(function() {
+            console.log( "complete" );
+          });
+          */
+
+        /* Current active users
+        var jqxhr = $.getJSON( "http://achievelife.devnull.rocks/api/v1/currentUsers?callback=?", function() {
+          console.log( "success" );
+        })
+          .done(function() {
+            $( "#serverStatus" ).replaceWith( "<h3 id=" + "serverStatus" + ">Current Active Users: Number from api</h3>" );
+            console.log( "second success" );
+          })
+          .fail(function() {
+            $( "#serverStatus" ).replaceWith( "<h3 id=" + "serverStatus" + ">Current Active Users: Error</h3>" );
+            console.log( "error" );
+          })
+          .always(function() {
+            console.log( "complete" );
+          });
+          */
       </script>
   </body>
 </html>

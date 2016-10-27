@@ -86,7 +86,6 @@
             <li><a href="index.html">Overview</a></li>
             <li class="active"><a href="#">Server<span class="sr-only">(current)</span></a></li>
             <li><a href="users.html">Users</a></li>
-            <li><a href="#">Placeholder</a></li>
           </ul>
         </div>
       </div>
@@ -102,5 +101,21 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.min.js"></script>
+    <script>
+      var jqxhr = $.getJSON( "http://achievelife.devnull.rocks/api/v1/ping?callback=?", function() {
+          console.log( "success" );
+        })
+          .done(function() {
+            $( "#serverStatus" ).replaceWith( "<h3 id=" + "serverStatus" + ">Server Status: Up</h3>" );
+            console.log( "second success" );
+          })
+          .fail(function() {
+            $( "#serverStatus" ).replaceWith( "<h3 id=" + "serverStatus" + ">Server Status: Down</h3>" );
+            console.log( "error" );
+          })
+          .always(function() {
+            console.log( "complete" );
+          });
+    </script>
   </body>
 </html>
