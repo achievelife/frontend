@@ -95,6 +95,8 @@
       <h3 id="uniqueUsers">Unique Users Today: 999</h3>
       <h3 id="currentUsers">Current Active Users: 99</h3>
       <h2 class="sub-header">User Info</h2>
+      <button type="button" id="prev10" class="btn btn-default">Prev 10</button>
+      <button type="button" id="next10" class="btn btn-default pull-right">Next 10</button>
           <div class="table-responsive">
             <table class="table table-striped">
               <thead>
@@ -112,6 +114,8 @@
               </tbody>
             </table>
           </div>
+      <button type="button" id="prev10" class="btn btn-default">Prev 10</button>
+      <button type="button" id="next10" class="btn btn-default pull-right">Next 10</button>
     </div>
 
 
@@ -120,78 +124,73 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.min.js"></script>
     <script>
-      /* Test script
-      $(function(){for (var i=0, l=5; i<l; i++){
-                    $("tbody").append("<tr><td>"+i+"</td><td>"+Math.random()*10+"</td><td>"+Math.random()*10+"</td><td>"+Math.random()*10+"</td><td>"+Math.random()*10+"</td><td>"+Math.random()*10+"</td></tr>")
-      }});
-      */
-
+      var count = 0;
+      var currentFirst = 1;
+      var currentLast = 11;
       // Get number of users and populate table
-      var userAmountResponse = $.post( "https://achievelife.devnull.rocks/admin/v1/getUsers", {key:"4F7F9C7078837F0EB296AF9E2AE4EFAE1C3F8F355D2CFD495C9F950A7227F1F1"} function() {
-        console.log( "success" );
-      })
-        .done(function() {
-          var userAmountJSON = $.parseJSON(userAmountResponse);
-          for (var i=1, l=userAmountJSON.count + 1; i<l; i++){
-            var useriResponse = $.post( "https://achievelife.devnull.rocks/admin/v1/getUser", {key:"4F7F9C7078837F0EB296AF9E2AE4EFAE1C3F8F355D2CFD495C9F950A7227F1F1", uid:i}, function() {
-              console.log( "success" );
-            })
-              .done(function() {
-                var useriJSON = $.parseJSON(useriResponse);
-                $("tableBody").append(
-                  "<tr><td>"+i+"</td><td>"+useriJSON.user.username+"</td><td>not yet implemented</td><td>"+useriJSON.user.fitness+"</td><td>"+useriJSON.user.intelligence+"</td><td>not yet implemented</td></tr>"
+      $.post( "https://achievelife.devnull.rocks/admin/v1/getUsers", {key:"4F7F9C7078837F0EB296AF9E2AE4EFAE1C3F8F355D2CFD495C9F950A7227F1F1"}, "json")
+        .done(function(data) {
+          count = data.count;
+          currentLast = Math.min(11, data.count + 1);
+          for (var i=currentFirst, l=currentLast; i<l; i++){
+            $.post( "http://127.0.0.1:5000/admin/v1/getUser", {key:"4F7F9C7078837F0EB296AF9E2AE4EFAE1C3F8F355D2CFD495C9F950A7227F1F1", uid:i})
+              .done(function(data) {
+                $("tbody").append("<tr><td>"+data.user.id+"</td><td>"+data.user.username+"</td><td>not yet implemented</td><td>"+data.user.fitness+"</td><td>"+data.user.intelligence+"</td><td>"+data.user.finance+"</td></tr>"
                 );
-                console.log( "second success" );
               })
               .fail(function() {
-                console.log( "error" );
-              })
-              .always(function() {
-                console.log( "complete" );
+                console.log( "error with getUser, user id ="+data.user.id );
               });
           }
-          console.log( "second success" );
         })
         .fail(function() {
-          console.log( "error" );
-        })
-        .always(function() {
-          console.log( "complete" );
+          console.log( "error on awithin/v1/getUsers" );
         });
 
-      /* Unique Users today
-      var jqxhr = $.getJSON( "http://achievelife.devnull.rocks/api/v1/uniqueUsers?callback=?", function() {
-        console.log( "success" );
-      })
-        .done(function() {
-          $( "#serverStatus" ).replaceWith( "<h3 id=" + "uniqueUsers" + ">Unique Users Today: Number from Api</h3>" );
-          console.log( "second success" );
-        })
-        .fail(function() {
-          $( "#serverStatus" ).replaceWith( "<h3 id=" + "serverStatus" + ">Unique Users Today: Error</h3>" );
-          console.log( "error" );
-        })
-        .always(function() {
-          console.log( "complete" );
-        });
-        */
+      $("#prev10").on('click', function(){
+        if(currentFirst <= 1){
+          //do nothing
+          currentFirst =1;
+          console.log("do nothing");
+        } else{
+          currentFirst = Math.max(currentFirst-10, 1);
+          currentLast = Math.min(currentLast-10, count+1);
+          $("tbody").empty();
+          for (var i=currentFirst, l=currentLast; i<l; i++){
+            $.post( "https://achievelife.devnull.rocks/admin/v1/getUser", {key:"4F7F9C7078837F0EB296AF9E2AE4EFAE1C3F8F355D2CFD495C9F950A7227F1F1", uid:i})
+              .done(function(data) {
+                $("tbody").append("<tr><td>"+data.user.id+"</td><td>"+data.user.username+"</td><td>not yet implemented</td><td>"+data.user.fitness+"</td><td>"+data.user.intelligence+"</td><td>"+data.user.finance+"</td></tr>"
+                );
+              })
+              .fail(function() {
+                console.log( "error with getUser, user id ="+data.user.id );
+              });
+          }
+        }
 
-      /* Current active users
-      var jqxhr = $.getJSON( "http://achievelife.devnull.rocks/api/v1/currentUsers?callback=?", function() {
-        console.log( "success" );
       })
-        .done(function() {
-          $( "#serverStatus" ).replaceWith( "<h3 id=" + "serverStatus" + ">Current Active Users: Number from api</h3>" );
-          console.log( "second success" );
-        })
-        .fail(function() {
-          $( "#serverStatus" ).replaceWith( "<h3 id=" + "serverStatus" + ">Current Active Users: Error</h3>" );
-          console.log( "error" );
-        })
-        .always(function() {
-          console.log( "complete" );
-        });
-        */
+
+      $('#next10').on('click', function(){
+        if(currentLast >= count+1){
+          //do nothing
+          currentLast = count+1;
+          console.log("do nothing");
+        } else{
+          currentFirst = Math.max(currentFirst+10, 1);
+          currentLast = Math.min(currentLast+10, count+1);
+          $("tbody").empty();
+          for (var i=currentFirst, l=currentLast; i<l; i++){
+            $.post( "https://achievelife.devnull.rocks/admin/v1/getUser", {key:"4F7F9C7078837F0EB296AF9E2AE4EFAE1C3F8F355D2CFD495C9F950A7227F1F1", uid:i})
+              .done(function(data) {
+                $("tbody").append("<tr><td>"+data.user.id+"</td><td>"+data.user.username+"</td><td>not yet implemented</td><td>"+data.user.fitness+"</td><td>"+data.user.intelligence+"</td><td>"+data.user.finance+"</td></tr>"
+                );
+              })
+              .fail(function() {
+                console.log( "error with getUser, user id ="+data.user.id );
+              });
+          }
+        }
+      })
     </script>
   </body>
 </html>
