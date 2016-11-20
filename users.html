@@ -138,7 +138,7 @@
         currentLast = count;
         }
         for (i = currentFirst; i < currentLast + 1; i++){
-          $("tbody").append("<tr><td>"+i+"</td><td>"+users[i]+"</td></tr>");
+          $("tbody").append("<tr id=><td>"+(i+1)+"</td><td><button type=\"button\" class=\"btn btn-default\" onclick=\"window.location.href=\'user.html?userid="+(i+1)+"\';\">"+users[i]+"</button></td></tr>");
         }
       })
       .fail(function() {
@@ -155,7 +155,7 @@
           currentLast = Math.min(currentLast-10, count);
           $("tbody").empty()
           for (i = currentFirst; i < currentLast + 1; i++){
-            $("tbody").append("<tr><td>"+i+"</td><td>"+users[i]+"</td></tr>");
+            $("tbody").append("<tr><td>"+(i+1)+"</td><td>"+users[i]+"</td></tr>");
           }
         }
       })
@@ -170,7 +170,7 @@
             currentLast = Math.min(currentLast+10, count);
             $("tbody").empty();
               for (i = currentFirst; i < currentLast + 1; i++){
-                $("tbody").append("<tr><td>"+i+"</td><td>"+users[i]+"</td></tr>");
+                $("tbody").append("<tr><td>"+(i+1)+"</td><td>"+users[i]+"</td></tr>");
               }
           }
       })
