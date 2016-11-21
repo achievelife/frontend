@@ -92,8 +92,8 @@
     </div>
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
       <h1 class="page-header">Users</h1>
-      <h3 id="uniqueUsers">Unique Users Today: 999</h3>
-      <h3 id="currentUsers">Current Active Users: 99</h3>
+      <h3 id="uniqueUsers">Unique Users Today: 23</h3>
+      <h3 id="currentUsers">Current Active Users: 8</h3>
       <h2 class="sub-header">User Info</h2>
       <button type="button" id="prev10" class="btn btn-default">Prev 10</button>
       <button type="button" id="next10" class="btn btn-default pull-right">Next 10</button>
@@ -155,7 +155,7 @@
           currentLast = Math.min(currentLast-10, count);
           $("tbody").empty()
           for (i = currentFirst; i < currentLast + 1; i++){
-            $("tbody").append("<tr><td>"+(i+1)+"</td><td>"+users[i]+"</td></tr>");
+            $("tbody").append("<tr id=><td>"+(i+1)+"</td><td><button type=\"button\" class=\"btn btn-default\" onclick=\"window.location.href=\'user.html?userid="+(i+1)+"\';\">"+users[i]+"</button></td></tr>");
           }
         }
       })
@@ -170,7 +170,7 @@
             currentLast = Math.min(currentLast+10, count);
             $("tbody").empty();
               for (i = currentFirst; i < currentLast + 1; i++){
-                $("tbody").append("<tr><td>"+(i+1)+"</td><td>"+users[i]+"</td></tr>");
+                $("tbody").append("<tr id=><td>"+(i+1)+"</td><td><button type=\"button\" class=\"btn btn-default\" onclick=\"window.location.href=\'user.html?userid="+(i+1)+"\';\">"+users[i]+"</button></td></tr>");
               }
           }
       })
