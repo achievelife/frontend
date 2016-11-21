@@ -92,8 +92,8 @@
     </div>
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
       <h1 class="page-header">Users</h1>
-      <h3 id="uniqueUsers">Unique Users Today: 999</h3>
-      <h3 id="currentUsers">Current Active Users: 99</h3>
+      <h3 id="uniqueUsers">Unique Users Today: 23</h3>
+      <h3 id="currentUsers">Current Active Users: 8</h3>
       <h2 class="sub-header">User Info</h2>
       <button type="button" id="prev10" class="btn btn-default">Prev 10</button>
       <button type="button" id="next10" class="btn btn-default pull-right">Next 10</button>
@@ -103,10 +103,6 @@
                 <tr>
                   <th>User #</th>
                   <th>Name</th>
-                  <th>Last active</th>
-                  <th>Fitness level</th>
-                  <th>Intelligence level</th>
-                  <th>Finance level</th>
                 </tr>
               </thead>
               <tbody>
@@ -125,71 +121,58 @@
     <script src="js/bootstrap.min.js"></script>
     <script>
       var count = 0;
-      var currentFirst = 1;
-      var currentLast = 11;
-      // Get number of users and populate table
-      $.post( "https://achievelife.devnull.rocks/admin/v1/getUsers", {key:"4F7F9C7078837F0EB296AF9E2AE4EFAE1C3F8F355D2CFD495C9F950A7227F1F1"}, "json")
-        .done(function(data) {
-          count = data.count;
-          currentLast = Math.min(11, data.count + 1);
-          for (var i=currentFirst, l=currentLast; i<l; i++){
-            $.post( "https://achievelife.devnull.rocks/admin/v1/getUser", {key:"4F7F9C7078837F0EB296AF9E2AE4EFAE1C3F8F355D2CFD495C9F950A7227F1F1", uid:i})
-              .done(function(data) {
-                $("tbody").append("<tr><td>"+data.user.id+"</td><td>"+data.user.username+"</td><td>not yet implemented</td><td>"+data.user.fitness+"</td><td>"+data.user.intelligence+"</td><td>"+data.user.finance+"</td></tr>"
-                );
-              })
-              .fail(function() {
-                console.log( "error with getUser, user id ="+data.user.id );
-              });
-          }
+      var currentFirst = 0;
+      var currentLast = 0;
+      var users = [];
+      $.post( "https://achievelife.devnull.rocks/admin/v1/getUsers", {key:"4F7F9C7078837F0EB296AF9E2AE4EFAE1C3F8F355D2CFD495C9F950A7227F1F1"}, function(data){
+        $.each(data.users, function(index, value){
+          users.push(value.username);
+          //count++;
         })
-        .fail(function() {
-          console.log( "error on awithin/v1/getUsers" );
-        });
+      } ,"json")
+      .done(function(data){
+        count = users.length - 1
+        if (count >= 10){
+        currentLast = 10;
+        } else{
+        currentLast = count;
+        }
+        for (i = currentFirst; i < currentLast + 1; i++){
+          $("tbody").append("<tr id=><td>"+(i+1)+"</td><td><button type=\"button\" class=\"btn btn-default\" onclick=\"window.location.href=\'user.html?userid="+(i+1)+"\';\">"+users[i]+"</button></td></tr>");
+        }
+      })
+      .fail(function() {
+        console.log("error with getUsers");
+      });
 
       $("#prev10").on('click', function(){
-        if(currentFirst <= 1){
+        if(currentFirst <= 0){
           //do nothing
-          currentFirst =1;
+          currentFirst =0;
           console.log("do nothing");
         } else{
-          currentFirst = Math.max(currentFirst-10, 1);
-          currentLast = Math.min(currentLast-10, count+1);
-          $("tbody").empty();
-          for (var i=currentFirst, l=currentLast; i<l; i++){
-            $.post( "https://achievelife.devnull.rocks/admin/v1/getUser", {key:"4F7F9C7078837F0EB296AF9E2AE4EFAE1C3F8F355D2CFD495C9F950A7227F1F1", uid:i})
-              .done(function(data) {
-                $("tbody").append("<tr><td>"+data.user.id+"</td><td>"+data.user.username+"</td><td>not yet implemented</td><td>"+data.user.fitness+"</td><td>"+data.user.intelligence+"</td><td>"+data.user.finance+"</td></tr>"
-                );
-              })
-              .fail(function() {
-                console.log( "error with getUser, user id ="+data.user.id );
-              });
+          currentFirst = Math.max(currentFirst-10, 0);
+          currentLast = Math.min(currentLast-10, count);
+          $("tbody").empty()
+          for (i = currentFirst; i < currentLast + 1; i++){
+            $("tbody").append("<tr id=><td>"+(i+1)+"</td><td><button type=\"button\" class=\"btn btn-default\" onclick=\"window.location.href=\'user.html?userid="+(i+1)+"\';\">"+users[i]+"</button></td></tr>");
           }
         }
-
       })
 
       $('#next10').on('click', function(){
-        if(currentLast >= count+1){
+        if(currentLast >= count){
           //do nothing
           currentLast = count+1;
           console.log("do nothing");
         } else{
-          currentFirst = Math.max(currentFirst+10, 1);
-          currentLast = Math.min(currentLast+10, count+1);
-          $("tbody").empty();
-          for (var i=currentFirst, l=currentLast; i<l; i++){
-            $.post( "https://achievelife.devnull.rocks/admin/v1/getUser", {key:"4F7F9C7078837F0EB296AF9E2AE4EFAE1C3F8F355D2CFD495C9F950A7227F1F1", uid:i})
-              .done(function(data) {
-                $("tbody").append("<tr><td>"+data.user.id+"</td><td>"+data.user.username+"</td><td>not yet implemented</td><td>"+data.user.fitness+"</td><td>"+data.user.intelligence+"</td><td>"+data.user.finance+"</td></tr>"
-                );
-              })
-              .fail(function() {
-                console.log( "error with getUser, user id ="+data.user.id );
-              });
+            currentFirst = Math.max(currentFirst+10, 1);
+            currentLast = Math.min(currentLast+10, count);
+            $("tbody").empty();
+              for (i = currentFirst; i < currentLast + 1; i++){
+                $("tbody").append("<tr id=><td>"+(i+1)+"</td><td><button type=\"button\" class=\"btn btn-default\" onclick=\"window.location.href=\'user.html?userid="+(i+1)+"\';\">"+users[i]+"</button></td></tr>");
+              }
           }
-        }
       })
     </script>
   </body>

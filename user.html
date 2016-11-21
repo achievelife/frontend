@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Server</title>
+    <title>User Info</title>
 
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -84,15 +84,65 @@
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
             <li><a href="index.html">Overview</a></li>
-            <li class="active"><a href="#">Server<span class="sr-only">(current)</span></a></li>
+            <li><a href="server.html">Server</a></li>
             <li><a href="users.html">Users</a></li>
           </ul>
         </div>
       </div>
     </div>
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-      <h1 class="page-header">Server</h1>
-      <h3>Server Status: Up</h3>
+      <h1 class="page-header" id="userName">UserX</h1>
+      <h3 id="accountStatus">Account Status: <div class="alert alert-success" role="alert">Good</div></h3>
+      <button type="button" class="btn btn-danger" data-toggle="dropdown">Ban User</button>
+      <h3 id="lastOnline">Last Online: 11/20/2016</h3>
+      <h3 id="lastLocation">Last Location: Lat: 37.640335 Lon: -76.640625</h3>
+      <h3 id="uniqueUsers">Level: 12</h3>
+      <h3>Fitness: Level 2</h3>
+      <div class="progress">
+        <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+        600/1000
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="input-group">
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="button">Set Experience To</button>
+          </span>
+          <input type="text" class="form-control">
+        </div>
+      </div>
+      <br>
+      <h3>Intelligence: Level 2</h3>
+      <div class="progress">
+        <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width: 33%;">
+        333/1000
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="input-group">
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="button">Set Experience To</button>
+          </span>
+          <input type="text" class="form-control">
+        </div>
+      </div>
+      <br>
+      <h3>Finance: Level 2</h3>
+      <div class="progress">
+        <div class="progress-bar" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%;">
+        200/1000
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="input-group">
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="button">Set Experience To</button>
+          </span>
+          <input type="text" class="form-control">
+        </div>
+      </div>
+      <br>
+
     </div>
 
 
@@ -101,15 +151,24 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.min.js"></script>
     <script>
-      // Server status code
-        $.post( "https://achievelife.devnull.rocks/admin/v1/getUser", {key:"4F7F9C7078837F0EB296AF9E2AE4EFAE1C3F8F355D2CFD495C9F950A7227F1F1", uid:"1"})
-          .done(function() {
-            $( "#serverStatus" ).replaceWith( "<h3 id=" + "serverStatus" + ">Server Status: Up</h3>" );
-          })
-          .fail(function() {
-            $( "#serverStatus" ).replaceWith( "<h3 id=" + "serverStatus" + ">Server Status: Down</h3>" );
-            console.log( "server down or error with admin/v1/getUser, user id = 1" );
-          });
+      function getParameterByName(name, url) {
+        if (!url) {
+          url = window.location.href;
+        }
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+      }
+
+      $.post( "https://achievelife.devnull.rocks/admin/v1/getUser", {key:"4F7F9C7078837F0EB296AF9E2AE4EFAE1C3F8F355D2CFD495C9F950A7227F1F1", uid:getParameterByName('userid')})
+        .done(function(data) {
+          $("#userName").replaceWith("<h1 class=\"page-header\" id=\"UserName\">"+data.user.username+"</h1>");
+        })
+        .fail(function() {
+          console.log( "error with getUser, user id ="+data.user.id );
+        });
     </script>
   </body>
 </html>
